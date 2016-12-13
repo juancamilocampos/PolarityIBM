@@ -36,12 +36,12 @@ class Bluemix:
 
     def polarity(self, text):
         """
-                :Date: 2016-12-12
-                :Version: 0.1
-                :Author: Juan Camilo Campos - Pontificia Universidad Javeriana Cali
+        :Date: 2016-12-12
+        :Version: 0.1
+        :Author: Juan Camilo Campos - Pontificia Universidad Javeriana Cali
 
-                :rtype: json
-                :return: the json that contains the values obtained from Bluemix (polarity, lang, keywords)
+        :rtype: json
+        :return: the json that contains the values obtained from Bluemix (polarity, lang, keywords)
 
         """
 
