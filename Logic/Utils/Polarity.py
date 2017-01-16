@@ -3,6 +3,9 @@ import os
 import configparser
 from watson_developer_cloud import AlchemyLanguageV1
 from datetime import datetime
+from watson_developer_cloud import PersonalityInsightsV3
+from os.path import join, dirname
+
 
 class Bluemix:
     """
@@ -36,6 +39,8 @@ class Bluemix:
             if os.path.isfile('../Model/Configuration/BluemixConfiguration.config'):
                 self.Config.read('../Model/Configuration/BluemixConfiguration.config')
                 self.api_key = self.Config.get('AlchemySettings', 'api_key')
+                self.username = self.Config.get('PersonalitySettings', 'username')
+                self.password = self.Config.get('PersonalitySettings', 'password')
                 self.LogFile.write(datetime.today().strftime("%a %b %d %H:%M:%S %Y") +
                                    "API key Alchemy : " + self.api_key + "\n")
             else:
@@ -109,3 +114,25 @@ class Bluemix:
                                " Exception while trying to connect with Alchemy Bluemix" + "\n")
 
         return json.dumps(json_doc)
+
+    def personality(self):
+        """
+        :Date: 2017-01-16
+        :Version: 0.1
+        :Author: Juan Camilo Campos - Pontificia Universidad Javeriana Cali
+
+        :rtype: json
+        :return: the json that contains the values obtained from Bluemix (polarity, lang, keywords)
+
+        """
+        personality_insights = PersonalityInsightsV3(
+            version='2016-10-20',
+            username=self.username,
+            password=self.password)
+
+        with open('../resources/personality-v3.json') as profile_json:
+            profile = personality_insights.profile(
+                profile_json.read(), content_type='application/json',
+                raw_scores=True, consumption_preferences=True)
+
+        return json.dumps(profile)
