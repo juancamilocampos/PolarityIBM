@@ -125,14 +125,23 @@ class Bluemix:
         :return: the json that contains the values obtained from Bluemix (polarity, lang, keywords)
 
         """
-        personality_insights = PersonalityInsightsV3(
-            version='2016-10-20',
-            username=self.username,
-            password=self.password)
+        try:
+            personality_insights = PersonalityInsightsV3(
+                version='2016-10-20',
+                username=self.username,
+                password=self.password)
 
-        with open('../resources/personality-v3.json') as profile_json:
-            profile = personality_insights.profile(
-                profile_json.read(), content_type='application/json',
-                raw_scores=True, consumption_preferences=True)
+            with open('../resources/personality-v3.json') as profile_json:
+                profile = personality_insights.profile(
+                    profile_json.read(), content_type='application/json',
+                    raw_scores=True, consumption_preferences=True)
 
-        return json.dumps(profile)
+            return json.dumps(profile)
+
+        except:
+
+            self.LogFile.write(datetime.today().strftime("%a %b %d %H:%M:%S %Y") +
+                           " Exception while trying to connect with Personality Insights Bluemix" + "\n")
+
+            return json.dumps({})
+
